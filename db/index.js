@@ -1,4 +1,4 @@
-import pg from "pg";
+const pg = require("pg");
 const { Pool } = pg;
 
 const pool = new Pool({
@@ -9,4 +9,4 @@ const pool = new Pool({
   port: 5432,
 });
 
-export const query = (text, params) => pool.query(text, params);
+module.exports = pool;
