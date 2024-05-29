@@ -2,12 +2,12 @@ const router = require("express").Router();
 const db = require("../db/index");
 const bcrypt = require("bcrypt");
 const jwtGenerator = require("../utils/jwtGenarator");
+const authorize = require("../middleware/auth");
 
 // register
 
-router.get("/", async (req, res) => {
+router.get("/", authorize, async (req, res) => {
   const result = await db.query("SELECT * FROM users");
-
   res.status(200).json({
     status: "success",
     results: result.rows.length,
@@ -68,9 +68,6 @@ router.post("/login", async (req, res) => {
     const token = jwtGenerator(user.rows[0].id);
     res.status(200).json({
       status: "success",
-      data: {
-        user: user.rows[0],
-      },
       token,
     });
   } catch (error) {
